@@ -65,10 +65,14 @@ class MyImagesPipeline(ImagesPipeline):
     def file_path(self, request, response=None, info=None):
         item = request.meta.get('item')
         index = request.meta.get('index')
+        if not item['image_paths'][index]:
+            return super(MyImagesPipeline,self).file_path(request, response=None, info=None)
         return  'full/%s.jpg'%item['image_paths'][index]
     # 重写了原来类中的缩略图名称
     def thumb_path(self, request, thumb_id, response=None, info=None):
         item = request.meta.get('item')
         index = request.meta.get('index')
+        if not item['image_paths'][index]:
+            return super(MyImagesPipeline, self).thumb_path(request, thumb_id, response=None, info=None)
         return 'thumbs/%s/%s.jpg' % (thumb_id,item['image_paths'][index])
 
